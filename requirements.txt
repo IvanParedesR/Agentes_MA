@@ -1,0 +1,17 @@
+streamlit
+pdfplumber
+re  # estándar, no se incluye aquí
+json  # estándar
+os  # estándar
+tempfile  # estándar
+openai>=1.0.0
+Pillow
+pytesseract
+pdf2image
+PyPDF2
+pandas
+python-docx
+PyMuPDF
+faiss-cpu  # o faiss-gpu si tienes CUDA
+langchain
+tiktoken
