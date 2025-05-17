@@ -1,6 +1,7 @@
 streamlit
 pdfplumber>=0.10
 openai>=1.0.0
+langchain-community
 Pillow
 pytesseract
 pdf2image
