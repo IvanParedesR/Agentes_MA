@@ -1,6 +1,5 @@
 streamlit
 pdfplumber>=0.10
-tempfile  # estándar
 openai>=1.0.0
 Pillow
 pytesseract
