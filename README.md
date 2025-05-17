@@ -38,7 +38,7 @@ Ejecuta la aplicación con streamlit run app.py
 * Visualiza los resultados y descarga el JSON o dictamen generado
 
 ## Créditos
-Desarrollado para facilitar el análisis documental en contextos legales, financieros y regulatorios por mi. Una parte del código fue generada por Chatgpt, Deepseek, Mistral y Anthropic. Esta la versión 3.0.
+Desarrollado para facilitar el análisis documental en contextos legales, financieros y regulatorios por mi. Una parte del código fue generada por Chatgpt (RAG), Deepseek (Streamlit), Mistral (Función poderes) y Anthropic (correciones y atención a errores). Esta la versión 3.0. La primera versión corría en Colab, la segunda versión incorporó la revisión de escritos iniciales. En total se usaron cerca de 40 prompts. 
 
 ## Prueba
 En internet hay varios documentos legales que pueden ser usados de prueba, recomiendo:
