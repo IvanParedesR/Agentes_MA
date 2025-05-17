@@ -1,6 +1,5 @@
 streamlit
 pdfplumber
-re  # estándar, no se incluye aquí
 json  # estándar
 os  # estándar
 tempfile  # estándar
