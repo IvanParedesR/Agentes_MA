@@ -421,8 +421,8 @@ def analisis_poderes(uploaded_file):
                 st.success("✅ Información del poder legal")
                 cols = st.columns(2)
                 with cols[0]:
-                    st.metric("🧑 Otorgante", data["otorgante"])
-                    st.metric("👤 Apoderado", data["apoderado"])
+                    st.metric("🧑 Otorgante", ", ".join(data["otorgante"]) if isinstance(data["otorgante"], list) else data["otorgante"])
+                    st.metric("👤 Apoderado", ", ".join(data["apoderado"]) if isinstance(data["apoderado"], list) else data["apoderado"])
                 with cols[1]:
                     st.metric("📅 Fecha de inicio", data["fecha_inicio"])
                 
