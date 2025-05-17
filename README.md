@@ -43,5 +43,5 @@ Desarrollado para facilitar el análisis documental en contextos legales, financ
 ## Prueba
 En internet hay varios documentos legales que pueden ser usados de prueba, recomiendo:
 
-https://impeweb.mpiochih.gob.mx/transparencia/recursos_materiales/BAXTER/PODER%20LEGAL%20BAXTER.pdf 
-https://oci.wi.gov/Documents/Companies/FinPacificIndEx1.pdf
+* https://impeweb.mpiochih.gob.mx/transparencia/recursos_materiales/BAXTER/PODER%20LEGAL%20BAXTER.pdf
+* https://oci.wi.gov/Documents/Companies/FinPacificIndEx1.pdf
