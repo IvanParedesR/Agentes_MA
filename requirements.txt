@@ -1,7 +1,7 @@
 streamlit
-pdfplumber
 json  # estándar
 os  # estándar
+pdfplumber>=0.10
 tempfile  # estándar
 openai>=1.0.0
 Pillow
