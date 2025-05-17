@@ -567,7 +567,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "Depósitos Bancarios", 
     "Fusiones y Adquisiciones", 
     "Poderes Legales",
-    "Análisis RAG Avanzado"
+    "Análisis de Contratos"
 ])
 
 with tab1:
