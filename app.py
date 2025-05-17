@@ -31,7 +31,7 @@ from langchain.docstore.document import Document
 from openai import OpenAI
 from langchain.prompts import PromptTemplate
 
-
+st.set_page_config(page_title="Merger and Acquisition - Revisión de documentos", layout="wide", page_icon="📄")
 # Configuración para Windows (coloca esto ANTES de usar pytesseract)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
@@ -43,8 +43,6 @@ except:
 
 # Configuración inicial
 warnings.filterwarnings("ignore", category=UserWarning, message=".*CropBox.*")
-st.set_page_config(page_title="Merger and Acquisition - Revisión de documentos", layout="wide", page_icon="📄")
-
 # Sidebar con configuración
 with st.sidebar:
     st.title("APIs de DeepSeek y OpenAI")   
