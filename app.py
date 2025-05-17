@@ -22,7 +22,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from datetime import datetime
 import os
 import fitz
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chat_models import ChatOpenAI
