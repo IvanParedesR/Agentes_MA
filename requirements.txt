@@ -9,5 +9,5 @@ pandas
 python-docx
 PyMuPDF
 faiss-cpu  # o faiss-gpu si tienes CUDA
-langchain
+langchain>=0.0.350
 tiktoken
