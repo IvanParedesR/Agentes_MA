@@ -368,12 +368,6 @@ def analisis_fusiones(uploaded_file):
                 except:
                     pass
 
-import easyocr
-import tempfile
-import json
-import streamlit as st
-from funciones import load_document, get_clients  # Asegúrate de tener load_document actualizado
-
 # Inicializa el lector de EasyOCR (fuera de funciones para no reinicializar)
 reader = easyocr.Reader(['es', 'en'], gpu=False)
 
