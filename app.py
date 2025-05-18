@@ -20,7 +20,6 @@ from docx.shared import Pt, Inches
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT, WD_BREAK
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from datetime import datetime
-import os
 import easyocr
 import fitz
 from langchain_openai import OpenAIEmbeddings
@@ -33,15 +32,6 @@ from openai import OpenAI
 from langchain.prompts import PromptTemplate
 
 st.set_page_config(page_title="Merger and Acquisition - Revisión de documentos", layout="wide", page_icon="📄")
-# Configuración para Windows (coloca esto ANTES de usar pytesseract)
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-# Verifica la instalación (opcional)
-try:
-    print(pytesseract.get_tesseract_version())
-except:
-    st.warning("Tesseract no está instalado correctamente")
-
 # Configuración inicial
 warnings.filterwarnings("ignore", category=UserWarning, message=".*CropBox.*")
 # Sidebar con configuración
@@ -79,7 +69,7 @@ def load_document(file_path, file_type):
                     text += page.extract_text() or ""
 
             # Si el texto extraído es escaso, usar OCR con EasyOCR
-            if len(text.strip()) < 50:
+            if len(text.strip()) < 250:
                 try:
                     images = convert_from_path(file_path)
                     for image in images:
@@ -107,7 +97,6 @@ def load_document(file_path, file_type):
             st.error(f"Error al leer archivo de texto: {str(e)}")
 
     return text
-
 # Funciones para cada tipo de análisis
 def analisis_depositos(uploaded_file):
     client, _ = get_clients()
