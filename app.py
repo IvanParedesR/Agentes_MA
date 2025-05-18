@@ -368,22 +368,29 @@ def analisis_fusiones(uploaded_file):
                 except:
                     pass
 
+import easyocr
+import tempfile
+import json
+import streamlit as st
+from funciones import load_document, get_clients  # Asegúrate de tener load_document actualizado
+
+# Inicializa el lector de EasyOCR (fuera de funciones para no reinicializar)
+reader = easyocr.Reader(['es', 'en'], gpu=False)
+
 def analisis_poderes(uploaded_file):
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    
     client, _ = get_clients()
     
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
         tmp_file.write(uploaded_file.getvalue())
         file_path = tmp_file.name
-    
-    # Carga el documento con OCR si es necesario
+
+    # Usa OCR con EasyOCR si es necesario
     document_text = load_document(file_path, uploaded_file.type)
-    
-    # Muestra el texto extraído para diagnóstico
-    with st.expander("Ver texto extraído (primeras 500 caracteres)"):
+
+    # Mostrar texto extraído
+    with st.expander("Ver texto extraído (primeros 500 caracteres)"):
         st.text(document_text[:500] + ("..." if len(document_text) > 500 else ""))
-    
+
     if st.button("Analizar Poder Legal"):
         with st.spinner("Extrayendo información del poder..."):
             prompt = """Analiza este texto legal y extrae en formato JSON:
@@ -396,13 +403,13 @@ def analisis_poderes(uploaded_file):
                 "limitaciones": "texto descriptivo",
                 "observaciones": "problemas detectados"
             }
-            Texto:""" + document_text[:13000]  # Limitar tamaño
-            
+            Texto:""" + document_text[:13000]
+
             response = client.chat.completions.create(
                 model="deepseek-chat",
                 messages=[
                     {
-                        "role": "system", 
+                        "role": "system",
                         "content": "Extrae información legal precisa. Devuelve SOLO el JSON."
                     },
                     {"role": "user", "content": prompt}
@@ -411,44 +418,40 @@ def analisis_poderes(uploaded_file):
                 response_format={"type": "json_object"},
                 max_tokens=1000
             )
-            
+
             try:
-                # Procesamiento mejorado del JSON
                 raw_response = response.choices[0].message.content
                 data = json.loads(raw_response)
-                
-                # Validación de campos
-                required_fields = ["otorgante", "apoderado", "fecha_inicio"]
-                for field in required_fields:
+
+                # Validación de campos clave
+                for field in ["otorgante", "apoderado", "fecha_inicio"]:
                     if field not in data:
                         data[field] = "No especificado"
-                
+
                 # Mostrar resultados
                 st.success("✅ Información del poder legal")
-                cols = st.columns(1)
-                with cols[0]:
-                    st.metric("📅 Fecha de inicio", data["fecha_inicio"])
+                st.metric("📅 Fecha de inicio", data["fecha_inicio"])
 
                 st.subheader("👤 Otorgante")
                 st.write(data.get("otorgante", []))
-                
+
                 st.subheader("👤 Apoderado")
                 st.write(data.get("apoderado", []))
-                
+
                 st.subheader("📋 Facultades Principales")
                 st.write(data.get("facultades", []))
-                
+
                 st.subheader("🏛️ Facultades de Administración")
                 st.write(data.get("facultades_administracion", []))
-                
+
                 if data.get("limitaciones"):
                     st.subheader("🚫 Limitaciones")
                     st.write(data["limitaciones"])
-                
+
                 if data.get("observaciones"):
                     st.warning("⚠️ Observaciones")
                     st.write(data["observaciones"])
-                
+
             except json.JSONDecodeError:
                 st.error("El modelo no devolvió un JSON válido")
                 st.code(f"Respuesta cruda:\n{raw_response}")
