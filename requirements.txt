@@ -14,4 +14,3 @@ faiss-cpu  # o faiss-gpu si tienes CUDA
 langchain>=0.0.350
 tiktoken
 easyocr
-poppler-utils
