@@ -57,7 +57,7 @@ def get_clients():
     )
 
 # Funciones comunes
-reader = easyocr.Reader(['es', 'en'], gpu=False)
+reader = easyocr.Reader(['es'], gpu=False) 
 
 def load_document(file_path, file_type):
     text = ""
@@ -74,7 +74,7 @@ def load_document(file_path, file_type):
                 try:
                     images = convert_from_path(file_path)
                     for image in images:
-                        result = reader.readtext(np.array(image), detail=0)
+                        result = reader.readtext(image, detail=0)  # Ya no se necesita np.array
                         text += "\n".join(result) + "\n"
                 except Exception as ocr_error:
                     st.warning(f"Ocurrió un error con OCR: {str(ocr_error)}")
@@ -85,7 +85,7 @@ def load_document(file_path, file_type):
     elif file_type.startswith("image/"):
         try:
             image = Image.open(file_path)
-            result = reader.readtext(np.array(image), detail=0)
+            result = reader.readtext(image, detail=0)
             text = "\n".join(result)
         except Exception as img_error:
             st.error(f"No se pudo procesar la imagen: {str(img_error)}")
