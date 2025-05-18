@@ -10,7 +10,7 @@ PyPDF2
 pandas
 python-docx
 PyMuPDF
-faiss-cpu  # o faiss-gpu si tienes CUDA
+faiss-cpu 
 langchain>=0.0.350
 tiktoken
 easyocr
