@@ -21,6 +21,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT, WD_BREAK
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from datetime import datetime
 import os
+import easyocr
 import fitz
 from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
@@ -33,7 +34,7 @@ from langchain.prompts import PromptTemplate
 
 st.set_page_config(page_title="Merger and Acquisition - Revisión de documentos", layout="wide", page_icon="📄")
 # Configuración para Windows (coloca esto ANTES de usar pytesseract)
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Verifica la instalación (opcional)
 try:
@@ -57,7 +58,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("Tarea de Agentes AI - ITAM 2025 - Iván PR")
 
-# Inicializar clientes API
+# Iniciar API
 def get_clients():
     return (
         OpenAI(api_key=api_key_deepseek, base_url="https://api.deepseek.com"),
@@ -65,40 +66,46 @@ def get_clients():
     )
 
 # Funciones comunes
+reader = easyocr.Reader(['es', 'en'], gpu=False)
+
 def load_document(file_path, file_type):
     text = ""
-    
+
     if file_type == "application/pdf":
         try:
-            # Primero intentar con extracción directa de texto
+            # Intentar extracción directa con pdfplumber
             with pdfplumber.open(file_path) as pdf:
                 for page in pdf.pages:
-                    text += page.extract_text() or ""            
-            # Solo intentar OCR si el texto es muy corto Y Tesseract está disponible
+                    text += page.extract_text() or ""
+
+            # Si el texto extraído es escaso, usar OCR con EasyOCR
             if len(text.strip()) < 50:
                 try:
                     images = convert_from_path(file_path)
                     for image in images:
-                        text += pytesseract.image_to_string(image) + "\n"
+                        result = reader.readtext(np.array(image), detail=0)
+                        text += "\n".join(result) + "\n"
                 except Exception as ocr_error:
-                    st.warning(f"Error en OCR: {str(ocr_error)}. Continuando con texto extraído.")
-                    
+                    st.warning(f"Ocurrió un error con OCR: {str(ocr_error)}")
+
         except Exception as e:
             st.error(f"Error al leer PDF: {str(e)}")
-    
+
     elif file_type.startswith("image/"):
         try:
-            text = pytesseract.image_to_string(Image.open(file_path))
+            image = Image.open(file_path)
+            result = reader.readtext(np.array(image), detail=0)
+            text = "\n".join(result)
         except Exception as img_error:
             st.error(f"No se pudo procesar la imagen: {str(img_error)}")
-    
-    else:  # Archivo de texto
+
+    else:  # Archivo de texto plano
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
                 text = file.read()
         except Exception as e:
-            st.error(f"Error al leer archivo: {str(e)}")
-    
+            st.error(f"Error al leer archivo de texto: {str(e)}")
+
     return text
 
 # Funciones para cada tipo de análisis
@@ -362,7 +369,6 @@ def analisis_fusiones(uploaded_file):
                     pass
 
 def analisis_poderes(uploaded_file):
-    # Configuración inicial de OCR
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     
     client, _ = get_clients()
