@@ -4,7 +4,6 @@ openai>=1.0.0
 langchain-community
 langchain-openai>=0.0.3
 Pillow
-numpy
 pytesseract
 pdf2image
 PyPDF2
