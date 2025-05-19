@@ -1,6 +1,6 @@
 # Análisis Automatizado de Documentos Legales y Financieros para la revisión de Mergers y Adquisitions
 ## Link https://agentesmerger.streamlit.app/
-Este proyecto permite extraer, analizar y estructurar información clave de documentos PDF, imágenes o archivos de texto relacionados con:
+Este proyecto permite extraer, analizar y estructurar información clave de documentos PDF o archivos de texto (No acepta imagenes ni pdf que no esten de lectura) relacionados con:
 
 * Comprobantes de depósitos bancarios
 * Operaciones de fusión y adquisición
